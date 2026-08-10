@@ -1,0 +1,1 @@
+import {StrictMode} from 'react';import{createRoot}from'react-dom/client';import App from'./App';import'./index.css';import'./enhancements.css';import'./fixes.css';import'./responsive.css';import'./cursor-final.css';import'./pokemon.css';createRoot(document.getElementById('root')!).render(<StrictMode><App/></StrictMode>);
