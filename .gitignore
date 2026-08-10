@@ -5,3 +5,6 @@ dist/
 *.log
 preview-*.png
 .DS_Store
+
+.vercel
+.env*
