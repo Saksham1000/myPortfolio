@@ -22,26 +22,4 @@ An interactive, recruiter-friendly portfolio that combines a professional softwa
 - Keyboard navigation, semantic structure, focus states and reduced-motion support
 - Lazy-loaded 3D bundle and split vendor chunks
 
-## Development
-
-```bash
-npm install
-npm run dev
-```
-
-## Production
-
-```bash
-npm run build
-npm run preview
-```
-
-Deploy the generated `dist/` directory or import this repository directly into Vercel using the Vite preset.
-
-## Structure
-
-Content is defined in `src/data/content.ts`; the procedural scene is in `src/components/three/World.tsx`; reusable Poké Ball navigation and project modal components live under `src/components/ui/`.
-
-## Design note
-
-The visual design is Pokémon-inspired and uses original procedural geometry. This project is not affiliated with Nintendo, The Pokémon Company, or Game Freak.
+Note: The visual design is Pokémon-inspired and uses original procedural geometry. This project is not affiliated with Nintendo, The Pokémon Company, or Game Freak.
