@@ -1,1 +1,35 @@
-import{useEffect,useRef,useState}from'react';import{createPortal}from'react-dom';export function CursorOrbFixed(){const ref=useRef<HTMLDivElement>(null),raf=useRef(0),target=useRef({x:-80,y:-80}),current=useRef({x:-80,y:-80}),[visible,setVisible]=useState(false),[interactive,setInteractive]=useState(false);useEffect(()=>{const fine=matchMedia('(any-pointer: fine)');if(!fine.matches)return;const tick=()=>{current.current.x+=(target.current.x-current.current.x)*.38;current.current.y+=(target.current.y-current.current.y)*.38;if(ref.current)ref.current.style.transform=`translate3d(${current.current.x}px,${current.current.y}px,0) scale(${interactive?1.28:1})`;raf.current=requestAnimationFrame(tick)};const move=(e:PointerEvent)=>{if(e.pointerType==='touch')return;target.current={x:e.clientX-16,y:e.clientY-16};setVisible(true);setInteractive(Boolean((e.target as HTMLElement).closest('a,button,input,textarea,select,[role="button"]')));document.documentElement.classList.add('custom-cursor-ready')};const leave=()=>setVisible(false),enter=()=>setVisible(true);addEventListener('pointermove',move,{passive:true});document.addEventListener('mouseleave',leave);document.addEventListener('mouseenter',enter);raf.current=requestAnimationFrame(tick);return()=>{cancelAnimationFrame(raf.current);removeEventListener('pointermove',move);document.removeEventListener('mouseleave',leave);document.removeEventListener('mouseenter',enter);document.documentElement.classList.remove('custom-cursor-ready')}},[interactive]);if(typeof document==='undefined')return null;return createPortal(<div ref={ref} className={`cursor-orb-fixed ${visible?'is-visible':''} ${interactive?'is-interactive':''}`} aria-hidden="true"><img src="/favicon.png" alt="" draggable="false"/><i/></div>,document.body)}
+import {useEffect,useRef} from 'react';
+import {createPortal} from 'react-dom';
+
+const INTERACTIVE='a,button,input,textarea,select,summary,label,[role="button"],[role="link"],[contenteditable="true"],.project-card';
+
+export function CursorOrbFixed(){
+  const cursor=useRef<HTMLDivElement>(null);
+  useEffect(()=>{
+    const finePointer=matchMedia('(hover: hover) and (pointer: fine)');
+    if(!finePointer.matches)return;
+    const root=document.documentElement;
+    const node=cursor.current;
+    if(!node)return;
+    let frame=0,nextX=-100,nextY=-100,active=false,pressed=false;
+    const paint=()=>{frame=0;node.style.transform=`translate3d(${nextX}px,${nextY}px,0)`;};
+    const schedule=()=>{if(!frame)frame=requestAnimationFrame(paint);};
+    const setActive=(next:boolean)=>{if(next===active)return;active=next;node.classList.toggle('is-interactive',active);};
+    const move=(event:PointerEvent)=>{if(event.pointerType==='touch')return;nextX=event.clientX;nextY=event.clientY;schedule();node.classList.add('is-visible');root.classList.add('custom-cursor-ready');setActive(Boolean((event.target as Element|null)?.closest?.(INTERACTIVE)));};
+    const down=()=>{pressed=true;node.classList.add('is-pressed');};
+    const up=()=>{if(!pressed)return;pressed=false;node.classList.remove('is-pressed');};
+    const hide=()=>node.classList.remove('is-visible');
+    const show=()=>{if(nextX>=0)node.classList.add('is-visible');};
+    const visibility=()=>document.hidden?hide():show();
+    addEventListener('pointermove',move,{passive:true});
+    addEventListener('pointerdown',down,{passive:true});
+    addEventListener('pointerup',up,{passive:true});
+    addEventListener('blur',hide);
+    document.addEventListener('mouseleave',hide);
+    document.addEventListener('mouseenter',show);
+    document.addEventListener('visibilitychange',visibility);
+    return()=>{if(frame)cancelAnimationFrame(frame);removeEventListener('pointermove',move);removeEventListener('pointerdown',down);removeEventListener('pointerup',up);removeEventListener('blur',hide);document.removeEventListener('mouseleave',hide);document.removeEventListener('mouseenter',show);document.removeEventListener('visibilitychange',visibility);root.classList.remove('custom-cursor-ready');};
+  },[]);
+  if(typeof document==='undefined')return null;
+  return createPortal(<div ref={cursor} className="cursor-orb-fixed" aria-hidden="true"><span className="cursor-aura"/><img src="/icons8-ultra-ball-96.png" alt="" draggable="false"/></div>,document.body);
+}
