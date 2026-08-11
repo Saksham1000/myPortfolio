@@ -22,4 +22,4 @@ An interactive, recruiter-friendly portfolio that combines a professional softwa
 - Keyboard navigation, semantic structure, focus states and reduced-motion support
 - Lazy-loaded 3D bundle and split vendor chunks
 
-Note: The visual design is Pokémon-inspired and uses original procedural geometry. This project is not affiliated with Nintendo, The Pokémon Company, or Game Freak.
+Note: The visual design is Pokémon-inspired. This project is not affiliated with Nintendo, The Pokémon Company, or Game Freak.
