@@ -31,5 +31,5 @@ export function CursorOrbFixed(){
     return()=>{if(frame)cancelAnimationFrame(frame);removeEventListener('pointermove',move);removeEventListener('pointerdown',down);removeEventListener('pointerup',up);removeEventListener('blur',hide);document.removeEventListener('mouseleave',hide);document.removeEventListener('mouseenter',show);document.removeEventListener('visibilitychange',visibility);root.classList.remove('custom-cursor-ready');};
   },[]);
   if(typeof document==='undefined')return null;
-  return createPortal(<div ref={cursor} className="cursor-orb-fixed" aria-hidden="true"><span className="cursor-aura"/><img src="/icons8-ultra-ball-96.png" alt="" draggable="false"/></div>,document.body);
+  return createPortal(<div ref={cursor} className="cursor-orb-fixed" aria-hidden="true"><span className="cursor-aura"/><img src="/icons8-ultra-ball-cursor-v2.png" alt="" draggable="false"/></div>,document.body);
 }
